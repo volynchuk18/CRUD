@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <title>Vue CRUD</title>
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8"> 
+</head>
+
+<body>
+
+<div class="container">
+  <main id="app">
+    <router-view></router-view>
+  </main>
+</div>
+
+<template id="clients-list">
+  <div>
+   <div class="actions">
+      <router-link :to="{path: '/add-client'}">
+      <a class="btn btn-outline-primary">
+          Add client       
+      </a>
+    </router-link>
+    </div>
+  <table class="table">
+    <thead class="thead-dark">
+    <tr>
+      <th scope="col">Name</th>
+      <th scope="col">Surname</th>
+      <th scope="col">Phone</th>
+      <th scope="col">Email</th>
+      <th scope="col">Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr v-for="client in clients">
+      <td>{{ client.name }}</td>
+      <td>{{ client.surname }}</td>
+      <td>{{ client.phone }}</td>
+      <td>{{ client.email }}</td>
+      <td>
+        <router-link :to="{name: 'client-edit', params: {client_id: client.id}}"><a class="btn btn-warning btn-xs">Edit</a></router-link>
+        <a class="btn btn-danger btn-xs" v-on:click={{deleteClient(client.id)}}>Delete</a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+</template>
+
+<template id="add-client">
+  <div>
+  <h2>Input JSON array</h2>
+  <div class="form-group">
+    <div class="input-group mb-3" >
+      <input type="text" class="form-control" placeholder='[{"name":"Sam", "surname": "Smith"}, {"name":"Alex", "email": "AaA@mail"}]' v-model="client.JSON">
+      <div class="input-group-append">
+        <button class="btn btn-outline-secondary" type="button" v-on:click=importClients(client.JSON)>Create</button>
+      </div>
+    </div>
+  </div>  
+  <h2>or add a new client manually</h2>
+  <form v-on:submit="createClient">
+    <div class="form-group">
+      <label for="add-name">Name</label>
+      <input class="form-control" id="add-name" v-model="client.name" required/>
+    </div>
+    <div class="form-group">
+      <label for="add-surname">Surname</label>
+      <input class="form-control" id="add-surname" v-model="client.surname"/>
+    </div>
+    <div class="form-group">
+      <label for="add-phone">Phone</label>
+      <input class="form-control" id="add-phone" v-model="client.phone"/>
+    </div>
+    <div class="form-group">
+      <label for="add-email">Email</label>
+      <input class="form-control" id="add-email" v-model="client.email"/>
+    </div>
+    <button type="submit" class="btn btn-primary">Create</button>
+    <a class="btn btn-default"><router-link to="/">Cancel</router-link></a>
+  </form>
+</div>
+</template>
+
+<template id="client-edit">
+  <div>
+  <h2>Edit client</h2>
+  <form v-on:submit="updateClient">
+    <div class="form-group">
+      <label for="edit-name">Name</label>
+      <input class="form-control" id="edit-name" v-model="client.name" required/>
+    </div>
+    <div class="form-group">
+      <label for="edit-surname">Surname</label>
+      <input class="form-control" id="edit-surname" v-model="client.surname"/>
+    </div>
+    <div class="form-group">
+      <label for="edit-phone">Phone</label>
+      <input class="form-control" id="edit-phone" v-model="client.phone"/>
+    </div>
+    <div class="form-group">
+      <label for="edit-email">Name</label>
+      <input class="form-control" id="edit-email" v-model="client.email"/>
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a class="btn btn-default"><router-link to="/">Cancel</router-link></a>
+  </form>
+  </div>
+</template>
+
+</body>
+
+<script src='https://unpkg.com/vue@2.0.0/dist/vue.js'></script>
+<script src='https://unpkg.com/vue-router@2.0.0/dist/vue-router.js'></script>
+<script src="index.js"></script>
+
+</html>
